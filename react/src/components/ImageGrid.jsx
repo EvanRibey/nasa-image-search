@@ -1,7 +1,27 @@
 import Masonry from '@mui/lab/Masonry';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 export default function ImageGrid(props) {
-  const { images } = props;
+  const { images, loading } = props;
+
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <CircularProgress />
+      </Box>
+    )
+  }
+
+  if (!images) return;
+  if (!images.length) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <h2>There are no images for this page.</h2>
+        <p>Consider going back a page, or trying another search term.</p>
+      </Box>
+    );
+  }
 
   const ImageMap = images.map(({ href, title }) => {
     return (
