@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import Heading from './components/Heading';
-import ImageGrid from './components/Grid';
+import ImageGrid from './components/ImageGrid';
 import getImages from './helpers/get-images';
 
 function App() {
