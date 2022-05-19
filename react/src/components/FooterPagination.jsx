@@ -17,7 +17,11 @@ export default function FooterPagination(props) {
   }
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+    <Box sx={{
+      display: 'flex',
+      justifyContent: 'center',
+      pt: '24px',
+    }}>
       <Pagination
         count={defaultPageSize}
         defaultPage={1}

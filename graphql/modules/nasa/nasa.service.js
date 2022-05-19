@@ -17,7 +17,7 @@ function createUrl(query, page) {
   return fullUrl.toString();
 }
 
-function checkErrors(response) {
+async function checkErrors(response) {
   if (!response.ok) {
     switch (response.status) {
       case 400:
@@ -29,6 +29,8 @@ function checkErrors(response) {
       case 504:
       default:
         // log the error here using service
+        const message = await response.json();
+        console.error(message);
         throw new ApolloError('unexpected error occurred');
     }
   }
@@ -52,7 +54,7 @@ export default async function retrieveImages(options) {
 
   const url = createUrl(query, page);
   const response = await fetch(url);
-  checkErrors(response);
+  await checkErrors(response);
 
   const { collection } = await response.json();
   const images = cleanImages(collection.items);
