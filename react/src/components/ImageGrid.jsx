@@ -1,16 +1,24 @@
+import { useState } from 'react';
 import Masonry from '@mui/lab/Masonry';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import Image from './Image';
 
 export default function ImageGrid(props) {
-  const { images, loading } = props;
+  const { images } = props;
+  const [imageLoading, setImageLoading] = useState(
+    images ? new Array(images.length).fill(false) : [],
+  );
 
-  if (loading) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: '32px', mb: '16px' }}>
-        <CircularProgress />
-      </Box>
-    )
+  const isLoading = imageLoading.some((loadState) => loadState === false);
+
+  function loadFinished(id) {
+    console.log(id);
+    setImageLoading((prev) => {
+      const clone = [...prev];
+      clone[id] = true;
+      return clone;
+    });
   }
 
   if (!images) return;
@@ -23,11 +31,13 @@ export default function ImageGrid(props) {
     );
   }
 
-  const ImageMap = images.map(({ href, title }) => {
+  if (isLoading) {
     return (
-      <img key={href} src={href} alt={title} loading="lazy" />
-    );
-  });
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: '32px', mb: '16px' }}>
+        <CircularProgress />
+      </Box>
+    )
+  }
 
   return (
     <Masonry
@@ -35,7 +45,17 @@ export default function ImageGrid(props) {
       columns={{ xs: 2, sm: 4, md: 5, lg: 6}}
       spacing={2}
     >
-      {ImageMap}
+      {images.map(({ href, title }, index) => {
+        return (
+          <Image
+            key={href}
+            id={index}
+            src={href}
+            alt={title}
+            loadFinished={loadFinished}
+          />
+        );
+      })}
     </Masonry>
   );
 }

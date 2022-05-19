@@ -13,7 +13,6 @@ function App() {
 
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
   const [images, setImages] = useState(null);
 
   const [showPagination, setPagination] = useState(false);
@@ -21,8 +20,8 @@ function App() {
   const [maxPageSize, setMaxPageSize] = useState(2);
 
   useEffect(() => {
-    const { state } = location;
     async function retrieve() {
+      const { state } = location;
       if (!state || !state.search) return;
       let images = [];
       try {
@@ -33,7 +32,6 @@ function App() {
       }
       setImages(images);
       updatePagination(images.length);
-      setLoading(false);
     }
     retrieve();
   }, [location]);
@@ -68,7 +66,6 @@ function App() {
   }
 
   function changePage(newPage) {
-    setLoading(true);
     scrollTop();
     setPage(newPage);
     let newMaxPageSize = newPage + 1;
@@ -83,7 +80,6 @@ function App() {
   }
 
   function changeQuery() {
-    setLoading(true);
     setPage(1);
     setMaxPageSize(2);
     navigate(`/${search}`, {
@@ -98,7 +94,7 @@ function App() {
   return (
     <div className="App">
       <Heading term={search} setTerm={setSearch} search={changeQuery} />
-      <ImageGrid images={images} loading={loading} />
+      <ImageGrid images={images} />
       <FooterPagination
         defaultPageSize={maxPageSize}
         active={showPagination}

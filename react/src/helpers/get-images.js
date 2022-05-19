@@ -11,12 +11,13 @@ const GET_IMAGES = gql`
   }
 `;
 
-export default async function getImages(search, page=1) {
+export default async function getImages(search, page) {
+  let pageCatch = page || 1;
   const { data } = await client.query({
     query: GET_IMAGES,
     variables: {
       search,
-      page,
+      page: pageCatch,
     }
   });
 
